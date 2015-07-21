@@ -1,6 +1,6 @@
 # core
 gulp = require 'gulp'
-
+express = require 'express'
 # stream utilities
 path = require 'path'
 
@@ -21,6 +21,8 @@ watchify = require 'watchify'
 paths =
   bundle: './src/index.coffee'
   stylus: './src/index.styl'
+  html: './src/index.html'
+  img: './src/img/**/*'
 
 # javascript
 args =
@@ -34,7 +36,6 @@ bundler = browserify paths.bundle, args
 bundler = watchify bundler
 bundler.transform coffeeify
 
-
 bundle = ->
   bundler.bundle()
     .pipe source 'index.js'
@@ -44,9 +45,27 @@ bundle = ->
 
 gulp.task 'js', bundle
 
+gulp.task 'server', (cb) ->
+  app = express()
+  app.use express.static "#{__dirname}/public"
+  app.get '/*', (req, res) ->
+    res.sendFile "#{__dirname}/public/index.html"
+  app.listen 5000
+  cb()
+
 gulp.task 'stylus', ->
   gulp.src paths.stylus
     .pipe stylus()
+    .pipe gulp.dest './public'
+    .pipe reload()
+
+gulp.task 'html', ->
+  gulp.src paths.html
+    .pipe gulp.dest './public'
+    .pipe reload()
+
+gulp.task 'img', ->
+  gulp.src paths.img
     .pipe gulp.dest './public'
     .pipe reload()
 
@@ -56,4 +75,4 @@ gulp.task 'watch', (cb) ->
   autowatch gulp, paths
   cb()
 
-gulp.task 'default', gulp.series 'watch', 'js'
+gulp.task 'default', gulp.parallel 'watch', 'js', 'server', 'img', 'html'

@@ -1,16 +1,18 @@
 {
   "devDependencies": {
+    "browser-version": "stevelacy/browser-version",
     "browserify": "^9.0.3",
     "coffee-script": "^1.9.1",
     "coffeeify": "^1.0.0",
-    "gulp": "git://github.com/gulpjs/gulp#4.0",
+    "express": "^4.13.1",
+    "gulp": "gulpjs/gulp#4.0",
     "gulp-autowatch": "^1.0.1",
     "gulp-livereload": "^3.8.0",
     "gulp-stylus": "^2.0.1",
     "react": "^0.13.1",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
-    "browser-version": "stevelacy/browser-version",
     "watchify": "^3.0.0"
   }
 }
+
